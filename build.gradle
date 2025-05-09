@@ -27,6 +27,10 @@ ext {
     set('springCloudVersion', "2024.0.1")
 }
 
+
+jar {
+    enabled = false
+}
 dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'org.springframework.kafka:spring-kafka'
