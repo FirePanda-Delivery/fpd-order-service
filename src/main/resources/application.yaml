@@ -21,7 +21,7 @@ kafka:
 
 app:
   dictionary:
-    url: "localhost:8080"
+    url: ${APP_DICTIONARY_URL:localhost:8080}
     restaurant_url: "/restaurant"
 
 yandex:
@@ -29,5 +29,5 @@ yandex:
     key: ${YANDEX_API_KEY:c80bbf73-9f4a-4ac4-8f69-9b863ed3bb94}
 
 server:
-  port: 8081
+  port: 8080
 
