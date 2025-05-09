@@ -44,4 +44,4 @@ jobs:
       - name: docker build
         run: docker build ./ -t order-service
       - name: run image
-        run: docker run -d -p 8082:8080 --env APP_DICTIONARY_URL=fpd.midavon.ru/api --name order-service order-service
+        run: docker run -d -p 8081:8080 --env APP_DICTIONARY_URL=fpd.midavon.ru/api --name order-service order-service
