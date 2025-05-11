@@ -5,9 +5,11 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import ru.diplom.fpd.order.configuration.FeignConfig;
 import ru.diplom.fpd.order.dto.RestaurantDto;
 
-@FeignClient(value = "restaurantFeignClient", url = "${app.dictionary.url}/restaurant")
+@FeignClient(value = "restaurantFeignClient", url = "${app.dictionary.url}/restaurant",
+        configuration = FeignConfig.class)
 public interface RestaurantApi {
 
 
