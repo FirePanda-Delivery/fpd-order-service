@@ -21,4 +21,5 @@ public interface OrderRepositories extends JpaRepository<Order, Long> {
     Optional<Order> findByCourierIdAndOrderStatusIsNotIn(Long courierId, Collection<OrderStatus> orderStatus);
 
     List<Order> findAllByRestaurantIdAndOrderStatusIsNotIn(Long restaurantId, Collection<OrderStatus> orderStatus);
+
 }
