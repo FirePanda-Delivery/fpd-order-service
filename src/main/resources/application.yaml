@@ -13,6 +13,13 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "https://fpd.midavon.ru:8443/realms/test"
+          jwk-set-uri: "${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs"
+
 kafka:
   order-service:
     group-id: ${KAFKA_ORDER_SERVICE_GROUP_ID:test}
@@ -31,3 +38,7 @@ yandex:
 server:
   port: 8080
 
+jwt:
+  auth:
+    converter:
+      principle-attribute: "preferred_username"

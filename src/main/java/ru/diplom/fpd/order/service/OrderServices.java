@@ -191,38 +191,7 @@ public class OrderServices {
         return orderMapper.toDto(orderRepositories.save(order));
     }
 
-    private static class Storage {
-
-        /**
-         * stores data about active orders and assigned couriers
-         * param Long - courier id
-         * param Order - order
-         */
-        private final static Map<Long, Order> courierActiveOrder = new LinkedHashMap<>();
-
-        private final static Map<Long, List<Order>> restaurantActiveOrder = new LinkedHashMap<>();
-
-        private final static List<Order> activeOrder = new LinkedList<>();
-
-        public static void addRestaurantActiveOrder(long restaurantId, Order order) {
-            if (restaurantActiveOrder.get(restaurantId) == null) {
-
-                List<Order> orderList = new LinkedList<>();
-                orderList.add(order);
-                restaurantActiveOrder.put(restaurantId, orderList);
-            } else {
-                restaurantActiveOrder.get(restaurantId).add(order);
-            }
-        }
-
-        public static void addRestaurantActiveOrderList(long restaurantId, List<Order> order) {
-            if (restaurantActiveOrder.get(restaurantId) == null) {
-                restaurantActiveOrder.put(restaurantId, order);
-            } else {
-                restaurantActiveOrder.get(restaurantId).addAll(order);
-            }
-        }
+    public Order getOrderEntity(Long id) {
+        return orderRepositories.findById(id).orElseThrow(EntityNotFoundException::new);
     }
-
-
 }

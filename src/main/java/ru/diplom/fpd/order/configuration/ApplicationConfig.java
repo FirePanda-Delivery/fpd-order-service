@@ -13,10 +13,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ru.diplom.fpd.order.configuration.property.CourierKafkaProperties;
 import ru.diplom.fpd.order.feign.CityApi;
 import ru.diplom.fpd.order.feign.RestaurantApi;
+import ru.diplom.fpd.order.feign.UserApi;
 
 
 @Configuration
-@EnableFeignClients(clients = {RestaurantApi.class, CityApi.class})
+@EnableFeignClients(clients = {RestaurantApi.class, CityApi.class, UserApi.class})
 @EnableConfigurationProperties({CourierKafkaProperties.class})
 public class ApplicationConfig {
 
