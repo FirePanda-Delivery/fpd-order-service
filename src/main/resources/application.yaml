@@ -25,6 +25,8 @@ kafka:
     group-id: ${KAFKA_ORDER_SERVICE_GROUP_ID:test}
     in-topic: ${KAFKA_ORDER_SERVICE_IN_TOPIC:courier_found_topic}
     out-topic: ${KAFKA_ORDER_SERVICE_OUT_TOPIC:courier_search_topic}
+  dictionary-service:
+    out-delivery-time-topic: ${KAFKA_DICTIONARY_SERVICE_OUT_DELIVERY_TIME_TOPIC:avg_delivery_time_topic}
 
 app:
   dictionary:
@@ -42,3 +44,7 @@ jwt:
   auth:
     converter:
       principle-attribute: "preferred_username"
+
+schedulers:
+  avf-delivery-time-update:
+    cron: "0 */5 * * * *"
