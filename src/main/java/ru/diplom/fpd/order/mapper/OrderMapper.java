@@ -12,7 +12,8 @@ import ru.diplom.fpd.order.dto.OrderDto;
 import ru.diplom.fpd.order.dto.RestaurantAddressDto;
 import ru.diplom.fpd.order.model.Order;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,
+uses = ProductMapper.class)
 public interface OrderMapper {
 
 //    Order toEntity(OrderDto orderDto);

@@ -18,8 +18,7 @@ import ru.diplom.fpd.order.model.OrderStatus;
 public class OrderDto implements Serializable {
 
     private final long id;
-    private final RestaurantDto restaurant;
-    private final Double totalPrice;
+    private final Long restaurantId;
     private final Set<OrderProductDto> productList;
     private final Date date;
     private final OrderStatus orderStatus;

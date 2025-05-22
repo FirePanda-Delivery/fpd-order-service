@@ -13,5 +13,4 @@ import lombok.Getter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductDto implements Serializable {
     private final long id;
-    private final String name;
 }
