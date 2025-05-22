@@ -92,7 +92,7 @@ public class OrderController {
     }
 
     @Operation(summary = "Создать заказ")
-    @PreAuthorize("hasAnyRole('ROLE_USER') and #id = authentication.principal.id")
+    @PreAuthorize("hasAnyRole('ROLE_USER') and #createOrder.userId = authentication.principal.id")
     @PostMapping
     public ResponseEntity<OrderDto> createOrder(@RequestBody CreateOrderDto createOrder)
             throws AddressNotInDeliveryAreaException {
