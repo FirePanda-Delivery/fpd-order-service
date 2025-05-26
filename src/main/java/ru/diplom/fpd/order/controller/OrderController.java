@@ -5,9 +5,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.diplom.fpd.order.dto.CreateOrderDto;
 import ru.diplom.fpd.order.dto.OrderDto;
+import ru.diplom.fpd.order.dto.PandaPage;
 import ru.diplom.fpd.order.exception.AddressNotInDeliveryAreaException;
-import ru.diplom.fpd.order.feign.RestaurantApi;
 import ru.diplom.fpd.order.model.OrderStatus;
-import ru.diplom.fpd.order.processing.AddressProcessing;
 import ru.diplom.fpd.order.service.OrderServices;
 
 
@@ -33,8 +33,6 @@ import ru.diplom.fpd.order.service.OrderServices;
 public class OrderController {
 
     private final OrderServices orderServices;
-    private final RestaurantApi restaurantApi;
-    private final AddressProcessing validateAddress;
 
 
     @Operation(summary = "Получить цену доставки", deprecated = true)
@@ -59,10 +57,10 @@ public class OrderController {
     @Operation(summary = "Получить заказы пользователя", parameters = {
             @Parameter(name = "id", description = "Идетификатор пользователя", in = ParameterIn.PATH, required = true)
     })
-    @PreAuthorize("hasAnyRole('ROLE_USER') and #id = authentication.principal.id")
+//    @PreAuthorize("hasAnyRole('ROLE_USER') and #id = authentication.principal.id")
     @GetMapping("/user/{id}")
-    public ResponseEntity<List<OrderDto>> getUserOrders(@PathVariable Long id) {
-        return ResponseEntity.ok(orderServices.getUserOrders(id));
+    public ResponseEntity<PandaPage<OrderDto>> getUserOrders(@ParameterObject Pageable pageable, @PathVariable Long id) {
+        return ResponseEntity.ok(orderServices.getUserOrders(pageable, id));
     }
 //
 //    @Operation(summary = "Получить заказы курьера", parameters = {
@@ -78,8 +76,8 @@ public class OrderController {
     })
     @PreAuthorize("hasAnyRole('RESTAURANT_ADMIN_ROLE', 'RESTAURANT_MANAGER_ROLE')")
     @GetMapping("/restaurant/{id}")
-    public ResponseEntity<List<OrderDto>> getRestaurantOrders(@PathVariable long id) {
-        return ResponseEntity.ok(orderServices.getRestaurantOrders(id));
+    public ResponseEntity<PandaPage<OrderDto>> getRestaurantOrders(@ParameterObject Pageable pageable, @PathVariable long id) {
+        return ResponseEntity.ok(orderServices.getRestaurantOrders(pageable, id));
     }
 
     @Operation(summary = "Получить активные заказы ресторана", parameters = {
@@ -87,8 +85,8 @@ public class OrderController {
     })
     @PreAuthorize("hasAnyRole('RESTAURANT_ADMIN_ROLE', 'RESTAURANT_MANAGER_ROLE')")
     @GetMapping("/restaurant/{id}/active")
-    public ResponseEntity<List<OrderDto>> getActiveOrder(@PathVariable long id) {
-        return ResponseEntity.ok(orderServices.getActiveRestaurantOrder(id));
+    public ResponseEntity<PandaPage<OrderDto>> getActiveOrder(@ParameterObject Pageable pageable, @PathVariable long id) {
+        return ResponseEntity.ok(orderServices.getActiveRestaurantOrder(pageable, id));
     }
 
     @Operation(summary = "Создать заказ")

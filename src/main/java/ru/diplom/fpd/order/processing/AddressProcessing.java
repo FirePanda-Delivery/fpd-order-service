@@ -78,38 +78,6 @@ public class AddressProcessing {
                                 + " does not have delivery in the city of " + city));
     }
 
-//    public Courier courierNearestToAddress(List<ActiveCourier> couriers, String address) {
-//
-//        Coordinates cords = getCords(address);
-//
-//        int courierIndexWithMinimumDistanceToAddress = 0;
-//
-//        double minDistance = 0;
-//
-//        for (int index = 0; index < couriers.size(); index++) {
-//
-//            Coordinates courierLocation = couriers.get(index).getLocation();
-//
-//            if (index == 0) {
-//                minDistance = Math.sqrt(Math.pow((cords.getX() - courierLocation.getX()), 2) +
-//                        Math.pow((cords.getY() - courierLocation.getY()), 2));
-//            }
-//
-//            double distance = Math.sqrt(Math.pow((cords.getX() - courierLocation.getX()), 2) +
-//                    Math.pow((cords.getY() - courierLocation.getY()), 2));
-//
-//            if (minDistance > distance) {
-//
-//                minDistance = distance;
-//                courierIndexWithMinimumDistanceToAddress = index;
-//            }
-//
-//        }
-//
-//        return couriers.get(courierIndexWithMinimumDistanceToAddress).getCourier();
-//    }
-
-
     private boolean horizontalTracing(List<Coordinates> cords, Coordinates objectCords) {
 
         int numberIntersections = 0;
