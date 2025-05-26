@@ -4,19 +4,20 @@ import jakarta.persistence.EntityNotFoundException;
 import java.sql.Time;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Validator;
 import ru.diplom.fpd.order.dto.CreateOrderDto;
 import ru.diplom.fpd.order.dto.OrderDto;
+import ru.diplom.fpd.order.dto.PandaPage;
 import ru.diplom.fpd.order.dto.RestaurantAddressDto;
 import ru.diplom.fpd.order.dto.RestaurantDto;
 import ru.diplom.fpd.order.dto.kafka.CourierFoundMessage;
@@ -52,49 +53,20 @@ public class OrderServices {
         return orderMapper.toDto(orderRepositories.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 
-    public List<OrderDto> getUserOrders(long userId) {
-        return orderRepositories.findAllByUserId(userId).stream()
-                .map(orderMapper::toDto)
-                .toList();
+    public PandaPage<OrderDto> getUserOrders(Pageable pageable, long userId) {
+        return PandaPage.of(orderRepositories.findAllByUserId(userId, pageable)
+                .map(orderMapper::toDto));
     }
 
-//    public List<OrderDto> getCourierOrders(long id) {
-//        return orderRepositories.findAllByCourierId(id).stream()
-//                .map(orderMapper::toDto)
-//                .toList();
-//    }
+    public  PandaPage<OrderDto> getActiveRestaurantOrder(Pageable pageable, long restaurantId) {
 
-//    public Order getActiveCourierOrder(long courierId) {
-//
-//        Order order = Storage.courierActiveOrder.get(courierId);
-//
-//        if (order != null) {
-//            return order;
-//        }
-//
-//        Optional<Order> orderOptional = orderRepositories.findByCourier_IdAndOrderStatusIsNotIn(courierId, FINAL_STATUSES);
-//
-//        if (orderOptional.isEmpty()) {
-//            throw new EntityNotFoundException("order not found");
-//        }
-//
-//        order = orderOptional.get();
-//
-//        Storage.courierActiveOrder.put(courierId, order);
-//
-//        return order;
-//    }
-
-    public List<OrderDto> getActiveRestaurantOrder(long restaurantId) {
-
-            List<Order> orders = orderRepositories.findAllByRestaurantIdAndOrderStatusIsNotIn(restaurantId, FINAL_STATUSES);
-            return orders.stream().map(orderMapper::toDto).collect(Collectors.toList());
+        Page<Order> orders = orderRepositories.findAllByRestaurantIdAndOrderStatusIsNotIn(restaurantId, FINAL_STATUSES, pageable);
+        return PandaPage.of(orders.map(orderMapper::toDto));
     }
 
-    public List<OrderDto> getRestaurantOrders(long id) {
-        return orderRepositories.findAllByRestaurantId(id).stream()
-                .map(orderMapper::toDto)
-                .toList();
+    public PandaPage<OrderDto> getRestaurantOrders(Pageable pageable, long id) {
+        return  PandaPage.of(orderRepositories.findAllByRestaurantId(id, pageable)
+                .map(orderMapper::toDto));
     }
 
 
@@ -139,7 +111,7 @@ public class OrderServices {
                 .restaurantId(restaurant.getId())
                 .restaurantAddress(restaurantAddress)
                 .build());
-        
+
         return orderMapper.toDto(order);
     }
 
